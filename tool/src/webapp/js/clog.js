@@ -313,7 +313,12 @@ clog.switchState = function (state,arg) {
 
                         $('#clog-group-fieldset').hide();
                     });
-
+                    if ('TUTOR' === clog.currentPost.visibility) {
+                        $('#clog_visibility_tutor').prop('checked', true);
+                    }
+                    else{
+                        $('#clog_visibility_site').prop('checked', true);
+                    }
                     if (clog.currentPost.groups.length > 0) {
                         $('#clog-visibility-group').prop('checked', true);
                         $('#clog-group-fieldset').show();
