@@ -606,7 +606,7 @@ clog.utils = {
             
             var wintop = $(window).scrollTop(), docheight = $(document).height(), winheight = $(window).height();
 
-            if  ((wintop/(docheight-winheight)) > 0.95 || $("body").data("scroll-clog") === true) {
+            if  ((wintop/(docheight-winheight)) > -1 || $("body").data("scroll-clog") === true) {
                 $("body").data("scroll-clog", false);
                 $(window).off('scroll.clog');
                 callback(args);
