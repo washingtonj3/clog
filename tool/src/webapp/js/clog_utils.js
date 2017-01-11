@@ -412,7 +412,22 @@ clog.utils = {
             type:'DELETE',
             timeout: clog.AJAX_TIMEOUT,
             success: function (text, status) {
-                clog.switchState('viewAllPosts');
+                if ('post' === clog.currentState)
+                {
+                    clog.switchState('post',{postId: (clog.currentPost.id),fromSamepage: true});
+                }
+                else if ('userPosts' === clog.currentState)
+                {
+                    clog.switchState('userPosts');
+                }
+                else if ('viewRecycled' === clog.currentState)
+                {
+                    clog.switchState('viewRecycled');
+                }
+                else
+                {
+                    clog.switchState('viewAllPosts');
+                }
             },
             error: function (xmlHttpRequest, textStatus, error) {
                 alert("Failed to delete comment. Status: " + textStatus + ". Error: " + error);
