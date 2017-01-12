@@ -1,2 +1,12 @@
 	<a id="clog_user_posts_link" href="javascript:;">{{translate 'author_posts'}} {{creatorDisplayName}}</a>
 	<div id="post_{{id}}" style="width:100%"></div>
+    <div style="text-align: center;">
+        <a href="javascript:;" onClick="clog.switchState('post',{'postId':clog.currentPosts[clog.utils.getPostListNumber('{{id}}','first')].id});" title="{{translate 'first_post'}}"><img src="/clog-tool/images/direction_First.jpg" width="62" height="30" alt="{{translate 'first_post_alt_text'}}"/></a>
+        <p id="post_page-BlanksSpace">&nbsp;</p>
+        <a href="javascript:;" onClick="clog.switchState('post',{'postId':clog.currentPosts[clog.utils.getPostListNumber('{{id}}','left')].id});" title="{{translate 'previous_post'}}"><img src="/clog-tool/images/direction_Previous.jpg" width="84" height="30" alt="{{translate 'previous_post_alt_text'}}"/></a>
+        <p id="post_page-BlanksSpace">&nbsp;&nbsp;&nbsp;&nbsp;</p>
+        <a href="javascript:;" onClick="clog.switchState('post',{'postId':clog.currentPosts[clog.utils.getPostListNumber('{{id}}','right')].id});" title="{{translate 'next_post'}}"><img src="/clog-tool/images/direction_Next.jpg" width="62" height="30" alt="{{translate 'next_post_alt_text'}}"/></a>
+        <p id="post_page-BlanksSpace">&nbsp;</p>
+        <a href="javascript:;" onClick="clog.switchState('post',{'postId':clog.currentPosts[clog.utils.getPostListNumber('{{id}}','last')].id});" title="{{translate 'last_post'}}"><img src="/clog-tool/images/direction_Last.jpg" width="62" height="30" alt="{{translate 'last_post_alt_text'}}"/></a>
+    </div>
+    

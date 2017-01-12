@@ -259,7 +259,7 @@ clog.switchState = function (state,arg) {
                 clog.utils.addFormattedDatesToCurrentPost();
 
                 var cp = clog.currentPost;
-                        
+            
                 clog.utils.renderTemplate('post_page', cp, 'clog_content');
 
                 clog.utils.renderPost(cp, 'post_' + clog.currentPost.id);

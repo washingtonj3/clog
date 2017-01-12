@@ -614,6 +614,31 @@ clog.utils = {
         };
 
         return scroller;
+    },
+    getPostListNumber: function (postid, postRedirect) {
+        var pgNumber = 0;
+        for(var i = 0; i < clog.postsTotal; i++) {
+            if (postid === clog.currentPosts[i].id){
+                if(postRedirect === 'left'){
+                    pgNumber = i - 1;
+                    if(pgNumber < 0) {
+                        pgNumber = 0;;
+                    }
+                }
+                else if(postRedirect === 'right'){
+                    pgNumber = i + 1;
+                    if(pgNumber >= clog.postsTotal) {
+                        pgNumber = clog.postsTotal - 1
+                    }
+                }
+                else if(postRedirect === 'first'){
+                    pgNumber = 0;
+                }
+                else if(postRedirect === 'last'){
+                    pgNumber = clog.postsTotal - 1;
+                }
+            }
+        }return pgNumber;
     }
 };
 
