@@ -79,7 +79,7 @@ clog.switchState = function (state,arg) {
         clog.currentPosts = [];
 
         clog.utils.renderPageOfPosts();
-	} else if (clog.states.GROUPS === state) {
+	} else if ('groups' === state) {
 	    $('#clog_toolbar > li > span').removeClass('current');
 	    $('#clog_groups_link > span').addClass('current');
 
@@ -301,7 +301,8 @@ clog.switchState = function (state,arg) {
                         onMyWorkspace: clog.onMyWorkspace,
                         publicAllowed: clog.publicAllowed,
                         groups: clog.groups,
-                        hasGroups: clog.groups.length > 0
+                        hasGroups: clog.groups.length > 0,
+                        isTutor: clog.currentUserPermissions.tutor
                     };
 
                 clog.utils.renderTemplate('create_post', templateData, 'clog_content');
@@ -640,6 +641,11 @@ clog.toggleFullContent = function (v) {
 
                     if (clog.currentUserPermissions.postReadAny) {
                         $("#clog_view_authors_link").show();
+                    }
+                    if (this.clog.currentUserPermissions.tutor) {
+                        $("#clog_groups_link").show()
+                    } else {
+                        $("#clog_groups_link").hide()
                     }
 
                     // Now switch into the requested state
