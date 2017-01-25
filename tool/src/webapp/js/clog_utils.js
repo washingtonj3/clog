@@ -579,11 +579,15 @@ clog.utils = {
                 }
 
                 var authors = data.authors;
-
-                authors.forEach(function (a) {
-                    a.formattedDateOfLastPost = clog.utils.formatDate(a.dateOfLastPost);
-                });
-
+                clog.searchResults = 0;
+                if(clog.showSearchResults == true) {
+                    clog.utils.getSearchResult(authors);
+                }
+                else{
+                    authors.forEach(function (a) {
+                        a.formattedDateOfLastPost = clog.utils.formatDate(a.dateOfLastPost);
+                    });
+                }
                 var t = Handlebars.templates['authors'];
                 $('#clog-authors').append(t({ 'authors': authors }));
 
@@ -629,6 +633,41 @@ clog.utils = {
         };
 
         return scroller;
+    },
+    getSearchResult: function(authors){
+        authors.forEach(function (a) {
+            a.formattedDateOfLastPost = clog.utils.formatDate(a.dateOfLastPost);
+            if(clog.showSearchResults == true) {
+                var userEidHolder = a.userEid.toLowerCase();
+                var userDisplayNameHolder = a.userDisplayName.toLowerCase();
+                var searchBarHolder = (document.getElementsByName('autSearch')[0].value).toLowerCase();
+                if((((userEidHolder.search(searchBarHolder)) > -1) && ((document.getElementsByName('autSearch')[0].value) != ''))||
+                    (((userDisplayNameHolder.search(searchBarHolder)) > -1) && ((document.getElementsByName('autSearch')[0].value) != ''))){
+                    arguments[2][clog.searchResults].numberOfComments = a.numberOfComments;
+                    arguments[2][clog.searchResults].formattedDateOfLastPost = a.formattedDateOfLastPost;
+                    arguments[2][clog.searchResults].userEid = a.userEid;
+                    arguments[2][clog.searchResults].userId = a.userId;
+                    arguments[2][clog.searchResults].numberOfPosts = a.numberOfPosts;
+                    arguments[2][clog.searchResults].userDisplayName = a.userDisplayName;
+                    clog.searchResults += 1;
+                }
+            }
+        });
+        if(clog.searchResults > 0)
+        {
+            authors.length = clog.searchResults;
+        }
+        else
+        {
+            if(document.getElementsByName('autSearch')[0].value == "")
+            {
+            }
+            else
+            {
+                authors.length = 0;
+            }
+        }
+        clog.showSearchResults = false;
     }
 };
 
