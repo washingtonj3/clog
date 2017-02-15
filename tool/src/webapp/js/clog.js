@@ -12,7 +12,8 @@ clog.autosave_id = null;
 clog.page = 0;
 clog.postsTotal = 0;
 clog.postsRendered = 0;
-
+clog.showSearchResults = false;
+clog.searchResults = 0;
 // Sorting keys start
 clog.SORT_NAME_UP = 'sortnameup';
 clog.SORT_NAME_DOWN = 'sortnamedown';
@@ -178,6 +179,23 @@ clog.switchState = function (state,arg) {
                 clog.page = 0;
                 clog.postsRendered = 0;
                 clog.utils.renderPageOfMembers({ sort: clog.sortByComments });
+            });
+            $('#clog-searchAuthors').click(function (e) {
+                clog.showSearchResults = true;
+                clog.sortByName = clog.SORT_NAME_UP;
+                clog.page = 0;
+                clog.postsRendered = 0;
+                clog.utils.renderPageOfMembers({ sort: clog.sortByName });
+                document.getElementsByName('autSearch')[0].focus();
+            });
+            $('#clog-searchAuthorsTextbox').keyup(function(e){
+                    if(e.keyCode == 13){
+                        $('#clog-searchAuthors').click();
+                    }
+                });
+            $('#clog-clearText').click(function (e) {
+                document.getElementsByName('autSearch')[0].value = "";
+                document.getElementsByName('autSearch')[0].focus();
             });
         });
 
