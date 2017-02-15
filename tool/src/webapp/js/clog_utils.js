@@ -637,6 +637,27 @@ clog.utils = {
 
         return scroller;
     },
+
+    getPostListNumber: function (postid, leftOrRight) {
+        var pgNumber = 0;
+        for(var i = 0; i < clog.postsTotal; i++) {
+            if (postid === clog.currentPosts[i].id){
+                if(leftOrRight === 'left'){
+                    pgNumber = i - 1;
+                    if(pgNumber < 0) {
+                        pgNumber = clog.postsTotal - 1;
+                    }
+                }
+                else if(leftOrRight === 'right'){
+                    pgNumber = i + 1;
+                    if(pgNumber >= clog.postsTotal) {
+                        pgNumber = 0;
+                    }
+                }
+            }
+        }return pgNumber;
+    },
+
     getSearchResult: function(authors){
         authors.forEach(function (a) {
             a.formattedDateOfLastPost = clog.utils.formatDate(a.dateOfLastPost);
