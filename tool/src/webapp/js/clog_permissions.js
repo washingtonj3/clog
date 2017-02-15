@@ -14,6 +14,7 @@ function ClogPermissions(data) {
 	this.commentUpdateAny = false;
 	this.commentUpdateOwn = false;
 	this.modifyPermissions = false;
+	this.tutor = false;
 
 	for(var i=0,j=data.length;i<j;i++) {
 		if('clog.post.read.any' === data[i])
@@ -40,5 +41,7 @@ function ClogPermissions(data) {
 			this.commentUpdateOwn = true;
 		else if('clog.modify.permissions' === data[i])
 			this.modifyPermissions = true;
+		else if('clog.tutor' === data[i])
+			this.tutor = true;
 	}
 }
