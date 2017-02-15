@@ -308,9 +308,12 @@ clog.utils = {
             cache: false,
             timeout: clog.AJAX_TIMEOUT,
             success: function (result) {
-
                 if (clog.states.GROUP_POSTS === clog.currentState) {
                     clog.switchState(clog.currentState, { groupId: clog.currentGroupId, groupTitle: clog.currentGroupTitle });
+                } else if ('post' === clog.currentState){
+                    clog.deletedFromPost = true;
+                    clog.switchState('viewAllPosts');
+                    clog.deletedFromPost = false;
                 } else {
                     clog.switchState(clog.currentState);
                 }

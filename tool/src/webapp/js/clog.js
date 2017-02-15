@@ -12,6 +12,7 @@ clog.autosave_id = null;
 clog.page = 0;
 clog.postsTotal = 0;
 clog.postsRendered = 0;
+clog.deletedFromPost = false;
 clog.showSearchResults = false;
 clog.searchResults = 0;
 // Sorting keys start
@@ -68,7 +69,8 @@ clog.switchState = function (state,arg) {
         var templateData = {
                 onGateway: clog.onGateway,
                 siteId: clog.siteId,
-                showBody: clog.settings.showBody
+                showBody: clog.settings.showBody,
+                delFromPost: clog.deletedFromPost
             };
 
         clog.utils.renderTemplate('all_posts', templateData, 'clog_content');
