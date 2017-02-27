@@ -308,9 +308,12 @@ clog.utils = {
             cache: false,
             timeout: clog.AJAX_TIMEOUT,
             success: function (result) {
-
                 if (clog.states.GROUP_POSTS === clog.currentState) {
                     clog.switchState(clog.currentState, { groupId: clog.currentGroupId, groupTitle: clog.currentGroupTitle });
+                } else if ('post' === clog.currentState){
+                    clog.deletedFromPost = true;
+                    clog.switchState('viewAllPosts');
+                    clog.deletedFromPost = false;
                 } else {
                     clog.switchState(clog.currentState);
                 }
@@ -412,7 +415,22 @@ clog.utils = {
             type:'DELETE',
             timeout: clog.AJAX_TIMEOUT,
             success: function (text, status) {
-                clog.switchState('viewAllPosts');
+                if ('post' === clog.currentState)
+                {
+                    clog.switchState('post',{postId: (clog.currentPost.id),fromSamepage: true});
+                }
+                else if ('userPosts' === clog.currentState)
+                {
+                    clog.switchState('userPosts');
+                }
+                else if ('viewRecycled' === clog.currentState)
+                {
+                    clog.switchState('viewRecycled');
+                }
+                else
+                {
+                    clog.switchState('viewAllPosts');
+                }
             },
             error: function (xmlHttpRequest, textStatus, error) {
                 alert("Failed to delete comment. Status: " + textStatus + ". Error: " + error);
@@ -564,11 +582,15 @@ clog.utils = {
                 }
 
                 var authors = data.authors;
-
-                authors.forEach(function (a) {
-                    a.formattedDateOfLastPost = clog.utils.formatDate(a.dateOfLastPost);
-                });
-
+                clog.searchResults = 0;
+                if(clog.showSearchResults == true) {
+                    clog.utils.getSearchResult(authors);
+                }
+                else{
+                    authors.forEach(function (a) {
+                        a.formattedDateOfLastPost = clog.utils.formatDate(a.dateOfLastPost);
+                    });
+                }
                 var t = Handlebars.templates['authors'];
                 $('#clog-authors').append(t({ 'authors': authors }));
 
@@ -615,6 +637,7 @@ clog.utils = {
 
         return scroller;
     },
+
     getPostListNumber: function (postid, postRedirect) {
         var pgNumber = 0;
         for(var i = 0; i < clog.postsTotal; i++) {
@@ -639,6 +662,42 @@ clog.utils = {
                 }
             }
         }return pgNumber;
+    },
+
+    getSearchResult: function(authors){
+        authors.forEach(function (a) {
+            a.formattedDateOfLastPost = clog.utils.formatDate(a.dateOfLastPost);
+            if(clog.showSearchResults == true) {
+                var userEidHolder = a.userEid.toLowerCase();
+                var userDisplayNameHolder = a.userDisplayName.toLowerCase();
+                var searchBarHolder = (document.getElementsByName('autSearch')[0].value).toLowerCase();
+                if((((userEidHolder.search(searchBarHolder)) > -1) && ((document.getElementsByName('autSearch')[0].value) != ''))||
+                    (((userDisplayNameHolder.search(searchBarHolder)) > -1) && ((document.getElementsByName('autSearch')[0].value) != ''))){
+                    arguments[2][clog.searchResults].numberOfComments = a.numberOfComments;
+                    arguments[2][clog.searchResults].formattedDateOfLastPost = a.formattedDateOfLastPost;
+                    arguments[2][clog.searchResults].userEid = a.userEid;
+                    arguments[2][clog.searchResults].userId = a.userId;
+                    arguments[2][clog.searchResults].numberOfPosts = a.numberOfPosts;
+                    arguments[2][clog.searchResults].userDisplayName = a.userDisplayName;
+                    clog.searchResults += 1;
+                }
+            }
+        });
+        if(clog.searchResults > 0)
+        {
+            authors.length = clog.searchResults;
+        }
+        else
+        {
+            if(document.getElementsByName('autSearch')[0].value == "")
+            {
+            }
+            else
+            {
+                authors.length = 0;
+            }
+        }
+        clog.showSearchResults = false;
     }
 };
 

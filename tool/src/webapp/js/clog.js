@@ -12,7 +12,9 @@ clog.autosave_id = null;
 clog.page = 0;
 clog.postsTotal = 0;
 clog.postsRendered = 0;
-
+clog.deletedFromPost = false;
+clog.showSearchResults = false;
+clog.searchResults = 0;
 // Sorting keys start
 clog.SORT_NAME_UP = 'sortnameup';
 clog.SORT_NAME_DOWN = 'sortnamedown';
@@ -67,7 +69,8 @@ clog.switchState = function (state,arg) {
         var templateData = {
                 onGateway: clog.onGateway,
                 siteId: clog.siteId,
-                showBody: clog.settings.showBody
+                showBody: clog.settings.showBody,
+                delFromPost: clog.deletedFromPost
             };
 
         clog.utils.renderTemplate('all_posts', templateData, 'clog_content');
@@ -79,7 +82,7 @@ clog.switchState = function (state,arg) {
         clog.currentPosts = [];
 
         clog.utils.renderPageOfPosts();
-	} else if (clog.states.GROUPS === state) {
+	} else if ('groups' === state) {
 	    $('#clog_toolbar > li > span').removeClass('current');
 	    $('#clog_groups_link > span').addClass('current');
 
@@ -178,6 +181,23 @@ clog.switchState = function (state,arg) {
                 clog.page = 0;
                 clog.postsRendered = 0;
                 clog.utils.renderPageOfMembers({ sort: clog.sortByComments });
+            });
+            $('#clog-searchAuthors').click(function (e) {
+                clog.showSearchResults = true;
+                clog.sortByName = clog.SORT_NAME_UP;
+                clog.page = 0;
+                clog.postsRendered = 0;
+                clog.utils.renderPageOfMembers({ sort: clog.sortByName });
+                document.getElementsByName('autSearch')[0].focus();
+            });
+            $('#clog-searchAuthorsTextbox').keyup(function(e){
+                    if(e.keyCode == 13){
+                        $('#clog-searchAuthors').click();
+                    }
+                });
+            $('#clog-clearText').click(function (e) {
+                document.getElementsByName('autSearch')[0].value = "";
+                document.getElementsByName('autSearch')[0].focus();
             });
         });
 
@@ -301,7 +321,8 @@ clog.switchState = function (state,arg) {
                         onMyWorkspace: clog.onMyWorkspace,
                         publicAllowed: clog.publicAllowed,
                         groups: clog.groups,
-                        hasGroups: clog.groups.length > 0
+                        hasGroups: clog.groups.length > 0,
+                        isTutor: clog.currentUserPermissions.tutor
                     };
 
                 clog.utils.renderTemplate('create_post', templateData, 'clog_content');
@@ -317,7 +338,12 @@ clog.switchState = function (state,arg) {
 
                         $('#clog-group-fieldset').hide();
                     });
-
+                    if ('TUTOR' === clog.currentPost.visibility) {
+                        $('#clog_visibility_tutor').prop('checked', true);
+                    }
+                    else{
+                        $('#clog_visibility_site').prop('checked', true);
+                    }
                     if (clog.currentPost.groups.length > 0) {
                         $('#clog-visibility-group').prop('checked', true);
                         $('#clog-group-fieldset').show();
@@ -635,6 +661,11 @@ clog.toggleFullContent = function (v) {
 
                     if (clog.currentUserPermissions.postReadAny) {
                         $("#clog_view_authors_link").show();
+                    }
+                    if (this.clog.currentUserPermissions.tutor) {
+                        $("#clog_groups_link").show()
+                    } else {
+                        $("#clog_groups_link").hide()
                     }
 
                     // Now switch into the requested state
