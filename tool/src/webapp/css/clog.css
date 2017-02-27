@@ -209,6 +209,10 @@ a.clog-draft-label:hover {
 	clear: left;
     margin-top: 10px;
 }
+
+#post_page-BlanksSpace {
+	display:inline;
+}
 #clog-clearText{
 	float: right;
 	position:relative;

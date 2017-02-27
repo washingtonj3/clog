@@ -638,21 +638,27 @@ clog.utils = {
         return scroller;
     },
 
-    getPostListNumber: function (postid, leftOrRight) {
+    getPostListNumber: function (postid, postRedirect) {
         var pgNumber = 0;
         for(var i = 0; i < clog.postsTotal; i++) {
             if (postid === clog.currentPosts[i].id){
-                if(leftOrRight === 'left'){
+                if(postRedirect === 'left'){
                     pgNumber = i - 1;
                     if(pgNumber < 0) {
-                        pgNumber = clog.postsTotal - 1;
+                        pgNumber = 0;;
                     }
                 }
-                else if(leftOrRight === 'right'){
+                else if(postRedirect === 'right'){
                     pgNumber = i + 1;
                     if(pgNumber >= clog.postsTotal) {
-                        pgNumber = 0;
+                        pgNumber = clog.postsTotal - 1
                     }
+                }
+                else if(postRedirect === 'first'){
+                    pgNumber = 0;
+                }
+                else if(postRedirect === 'last'){
+                    pgNumber = clog.postsTotal - 1;
                 }
             }
         }return pgNumber;
