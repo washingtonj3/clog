@@ -209,3 +209,30 @@ a.clog-draft-label:hover {
 	clear: left;
     margin-top: 10px;
 }
+
+#post_page-BlanksSpace {
+	display:inline;
+}
+#clog-clearText{
+	float: right;
+	position:relative;
+	bottom:6px;
+	left:9px;
+}
+#clog-searchAuthors{
+	float: right;
+	position:relative;
+	bottom:6px;
+	left:13px;
+}
+#clog-searchAuthorsTextbox{
+	float: right;
+	position:relative;
+	left:8px;
+}
+#clog-authorWrapperSearchText{
+	float: right;
+	position:relative;
+	top:2px;
+	right:1px;
+}

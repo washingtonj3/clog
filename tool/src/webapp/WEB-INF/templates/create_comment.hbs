@@ -9,4 +9,4 @@
 	<br />
     <input id="clog_comment_id_field" type="hidden" value="{{id}}"/>
     <input id="clog_save_comment_button" type="button" value="{{translate 'save'}}"/>
-    <input type="button" value="{{translate 'cancel'}}" onclick="clog.switchState('viewAllPosts');"/>
+    <input type="button" value="{{translate 'cancel'}}" onclick="clog.switchState('post',{postId: '{{postId}}',fromSamepage: true});"/>
